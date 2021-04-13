@@ -1,0 +1,2 @@
+[global.databases]
+db_log = { url = "mysql://logsrv:password@localhost:3306/logsrv" }

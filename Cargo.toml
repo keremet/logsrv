@@ -1,0 +1,15 @@
+[package]
+name = "hello-rocket"
+version = "0.1.0"
+authors = ["Andrey Sokolov <keremet@solaris.kirov.ru>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rocket = "0.4.7"
+
+[dependencies.rocket_contrib]
+version = "0.4.7"
+default-features = false
+features = ["diesel_mysql_pool"]
