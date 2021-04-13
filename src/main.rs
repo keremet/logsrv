@@ -7,6 +7,7 @@ use rocket_contrib::databases::diesel;
 use diesel::prelude::*;
 use diesel::sql_types::Integer;
 use diesel::sql_types::Text;
+use diesel::QueryableByName;
 
 enum LogLevel {
     Debug   = 1,
@@ -28,17 +29,35 @@ fn str_to_log_level(log_level: &str) -> Option<LogLevel> {
 #[database("db_log")]
 struct LogsDbConn(diesel::MysqlConnection);
 
+#[derive(QueryableByName)]
+struct LogRec {
+#[sql_type = "Text"]
+    txt: String,
+#[sql_type = "Text"]
+    dt: String
+}
+
 #[get("/get/<log_level>/<time_begin>/<time_end>")]
-fn get_handler(conn: LogsDbConn, log_level: String, time_begin: String, time_end: String) -> &'static str {
+fn get_handler(conn: LogsDbConn, log_level: String, time_begin: String, time_end: String) -> String {
     let log_level = str_to_log_level(&log_level)
         .expect("invalid log level");
 
-/*    let log_recs = diesel::sql_query("select txt, DATE_FORMAT(dt, '%Y-%m-%dT%H:%i:%s.%f') from log where log_level= ?;")
+    let log_recs = diesel::sql_query(
+            "select txt, DATE_FORMAT(dt, '%Y-%m-%dT%H:%i:%s.%f') dt 
+             from log 
+             where log_level = ? and dt between STR_TO_DATE(?, '%Y-%m-%dT%H:%i:%s.%f') and STR_TO_DATE(?, '%Y-%m-%dT%H:%i:%s.%f');")
         .bind::<Integer, _>(log_level as i32)
-        .load::<(String, String)>(&*conn)
-        .expect("Error selecting"); */
-        
-    "get_handler"
+        .bind::<Text, _>(time_begin)
+        .bind::<Text, _>(time_end)
+        .load::<LogRec>(&*conn)
+        .expect("Error selecting");
+
+    let mut ret = String::new();
+    for rec in log_recs.iter() {
+        ret = ret + "dt: "  + &rec.dt  + "\n"
+                  + "txt: " + &rec.txt + "\n";
+    }
+    ret
 }
 
 #[post("/save/<log_level>", data = "<txt>")]

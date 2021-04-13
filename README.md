@@ -11,3 +11,5 @@
 
 curl -X POST -d "loglogloge3" http://localhost:8000/save/error
 
+curl -X GET http://localhost:8000/get/error/2021-04-12T18:07:12.726354/2022-04-12T18:07:12.726354
+
