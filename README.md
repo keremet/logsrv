@@ -10,8 +10,14 @@
 
 
 Запуск: 
-* Создать БД в MySQL. 
-* Выполнить в ней init.sql. 
+* Создать БД в MySQL.
+```shell
+echo "CREATE DATABASE logsrv; GRANT ALL PRIVILEGES ON logsrv.* TO 'logsrv'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION; FLUSH PRIVILEGES;" | mysql -u root -p 
+```
+* Выполнить в ней init.sql.
+```shell
+    cat init.sql | mysql -u logsrv -ppassword logsrv
+```
 * URL БД прописать в Rocket.toml.
 * cargo r
 
