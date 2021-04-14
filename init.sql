@@ -1,5 +1,3 @@
-drop table log;
-
 create table log (
 	id integer not null auto_increment primary key,
 	dt datetime(6) not null default current_timestamp(6),

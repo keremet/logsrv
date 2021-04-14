@@ -70,7 +70,7 @@ fn save_handler(conn: LogsDbConn, log_level: String, txt: String) -> &'static st
         .bind::<Text, _>(txt)
         .execute(&*conn)
         .expect("Error inserting");
-    "save_handler"
+    "record is saved\n"
 }
 
 fn main() {
