@@ -19,7 +19,7 @@ echo "CREATE DATABASE logsrv; GRANT ALL PRIVILEGES ON logsrv.* TO 'logsrv'@'loca
     cat init.sql | mysql -u logsrv -ppassword logsrv
 ```
 * URL БД прописать в Rocket.toml.
-* cargo r
+* cargo run
 
 Примеры обращений к серверу:
 * Для добавления сообщения: curl -X POST -d "loglogloge3" http://localhost:8000/save/error
